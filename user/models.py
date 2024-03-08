@@ -146,7 +146,7 @@ class Writer(models.Model):
     specialization = models.CharField(max_length=255)
     date = models.DateField()
     email = models.EmailField()
-    phone_number = models.CharField(max_length=20)
+    phone_number = models.CharField(max_length=30)
 
     def __str__(self):
         return self.name
@@ -157,7 +157,7 @@ class Client(models.Model):
     company_name = models.CharField(max_length=255)
 
     contact_email = models.EmailField()
-    contact_phone = models.CharField(max_length=20)
+    contact_phone = models.CharField(max_length=30)
     country = models.CharField(max_length=255)
 
     def __str__(self):
@@ -178,7 +178,7 @@ class Project(models.Model):
 
     deadline = models.DateField()
     client = models.CharField(max_length=255)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="New")
+    status = models.CharField(max_length=255, choices=STATUS_CHOICES, default="New")
     attachment = models.URLField(
         blank=True, null=True
     )
@@ -203,11 +203,14 @@ class Task(models.Model):
         ("Resubmission", "Resubmission"),
         ("Pending", "Pending"),
     )
-    title = models.CharField(max_length=20)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="New")
+    title = models.CharField(max_length=255)
+    status = models.CharField(max_length=255, choices=STATUS_CHOICES, default="New")
     writer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     book_balance = models.CharField(max_length=255)
     deadline = models.DateField()
+    attachment = models.URLField(
+        blank=True, null=True
+    )
 
     def __str__(self):
         return f"{self.title} - {self.writer.email}"
