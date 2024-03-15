@@ -247,15 +247,19 @@ def project_detail(request, pk):
 @api_view(["GET", "POST"])
 def submit_task_list(request):
     if request.method == "GET":
-        submit_tasks = SubmitTask.objects.all().order_by('id') 
+        submit_tasks = SubmitTask.objects.all().order_by('id')
         serializer = SubmitTaskSerializer(submit_tasks, many=True)
         return Response(serializer.data)
     elif request.method == "POST":
         serializer = SubmitTaskSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            # Retrieve the latest task and return its data
+            latest_task = SubmitTask.objects.latest('id')
+            latest_serializer = SubmitTaskSerializer(latest_task)
+            return Response(latest_serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
     
 
