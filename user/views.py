@@ -247,7 +247,7 @@ def project_detail(request, pk):
 @api_view(["GET", "POST"])
 def submit_task_list(request):
     if request.method == "GET":
-        submit_tasks = SubmitTask.objects.all()
+        submit_tasks = SubmitTask.objects.all().order_by('date_submitted') 
         serializer = SubmitTaskSerializer(submit_tasks, many=True)
         return Response(serializer.data)
     elif request.method == "POST":
@@ -256,7 +256,8 @@ def submit_task_list(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    
+    
 
 @api_view(["GET", "PUT", "PATCH", "DELETE"])
 def submit_task_detail(request, pk):
