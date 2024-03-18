@@ -221,6 +221,8 @@ class SubmitTask(models.Model):
     writer_email = models.EmailField()
     date_submitted = models.DateField()
     project_link = models.URLField()
+    date_joined = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True, db_index=True)
 
     def __str__(self):
         return self.title
